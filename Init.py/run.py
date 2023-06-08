@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import filedialog
-from tkinter import ttk
+import shutil
+import csv
+import os
 
 # CODIGO LOGICO EMPIEZA AQUI
 
@@ -21,7 +23,7 @@ class busqueda_init:
         
 
     def valor_extension(self):
-        ingresado = extension_guardada.get()  # Obtener el valor del Entry
+        self.ingresado = extension_guardada.get()  # Obtener el valor del Entry
         extension_ingresada.config(disabledforeground="forest green")
         if extension_ingresada['state'] == 'normal':
             extension_ingresada.config(state='disabled')  # Deshabilitar el Entry
@@ -54,6 +56,7 @@ class busqueda_init:
     
     def opcion_disponible (self, opcion):
 
+        self.opcion = opcion
         if opcion  == "Cortar":
             color_opcion = Cortar_1.cget("background")
             if Cortar_1["state"] == "normal" and color_opcion != "forest green":
@@ -87,10 +90,28 @@ class busqueda_init:
 
 # ----------------------------------------------------------------
 # Aqui empieza la logica y funcionamiento principal del programa
-          
-class Ejecucion_init:
-    
-    pass
+
+    def ejecucion_principal(self):
+        self.c1,self.c2 = 0,0
+        self.ruta_archivo.replace("/","\\")
+        with open(self.ruta_archivo,"r") as csv1:
+            lector_fila = csv.reader(csv1)
+            for valor_d in lector_fila:
+                concatenado = valor_d[0]+"."+self.ingresado
+                for ruta_origen, carpetas, archivos in os.walk(self.ruta_busqueda.replace("/","\\")):
+                    if concatenado in archivos:
+
+                        ruta_archivo_encontrado = os.path.join(ruta_origen, concatenado)
+                        if self.opcion  == "Cortar":
+                            pass
+                            self.c1 += 1
+                        elif self.opcion == "Copiar":
+                            shutil.copy2(ruta_archivo_encontrado, self.ruta_destino2.replace("/", "\\"))
+                            self.c1 += 1
+                        elif self.opcion == "Borrar":
+                            pass
+                            self.c1 += 1
+        
 
 
 # CODIGO DE INTERFAZ EMPIEZA AQUI
@@ -216,7 +237,7 @@ frame_colum4.grid(row=3, column=0, padx=(10, 0), pady=10, sticky="nesw")
 frame_separador1 = tk.Frame(frame_colum4, background="forest green")
 frame_separador1.grid(row=0,column=0)
 
-boton_inicio = tk.Button(frame_separador1, text="START",width=10, height=3, relief="ridge")
+boton_inicio = tk.Button(frame_separador1, text="START",width=10, height=3, relief="ridge", command=abrir_1.ejecucion_principal)
 boton_inicio.grid(row=0, column=0, padx=(5, 0), pady=(5, 5))
 
 frame_separador2 = tk.Frame(frame_colum4, background="forest green")
