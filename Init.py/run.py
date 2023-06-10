@@ -1,6 +1,8 @@
 import tkinter as tk
+from tkinter import ttk
 from tkinter import filedialog
 import shutil
+import time
 import csv
 import os
 
@@ -90,28 +92,35 @@ class busqueda_init:
 
 # ----------------------------------------------------------------
 # Aqui empieza la logica y funcionamiento principal del programa
+        
 
     def ejecucion_principal(self):
-        self.c1,self.c2 = 0,0
-        self.ruta_archivo.replace("/","\\")
-        with open(self.ruta_archivo,"r") as csv1:
-            lector_fila = csv.reader(csv1)
-            for valor_d in lector_fila:
-                concatenado = valor_d[0]+"."+self.ingresado
-                for ruta_origen, carpetas, archivos in os.walk(self.ruta_busqueda.replace("/","\\")):
-                    if concatenado in archivos:
+            boton_inicio.config(state=tk.DISABLED)
+            self.c1, self.c2 = 0, 0
+            self.ruta_archivo.replace("/","\\")
+            with open(self.ruta_archivo,"r") as csv1:
+                lector_fila = csv.reader(csv1)
+            
+                barra_progreso = ttk.Progressbar(frame_colum4, length=205, mode='determinate', maximum=100)
+                barra_progreso.grid(row=0, column=2)
 
-                        ruta_archivo_encontrado = os.path.join(ruta_origen, concatenado)
-                        if self.opcion  == "Cortar":
-                            pass
-                            self.c1 += 1
-                        elif self.opcion == "Copiar":
-                            shutil.copy2(ruta_archivo_encontrado, self.ruta_destino2.replace("/", "\\"))
-                            self.c1 += 1
-                        elif self.opcion == "Borrar":
-                            pass
-                            self.c1 += 1
-        
+                for valor_d in lector_fila:
+                    concatenado = valor_d[0]+"."+self.ingresado
+                    for ruta_origen, carpetas, archivos in os.walk(self.ruta_busqueda.replace("/","\\")):
+                        if concatenado in archivos:
+                            ruta_archivo_encontrado = os.path.join(ruta_origen, concatenado)
+                            if self.opcion  == "Cortar":
+                                shutil.move(ruta_archivo_encontrado, self.ruta_destino2.replace("/","\\"))
+                                self.c1 += 1
+                            elif self.opcion == "Copiar":
+                                shutil.copy2(ruta_archivo_encontrado, self.ruta_destino2.replace("/","\\"))
+                                self.c1 += 1
+                            elif self.opcion == "Borrar":
+                                os.remove(ruta_archivo_encontrado)
+                                self.c1 += 1             
+                boton_inicio.config(state=tk.NORMAL)
+
+
 
 
 # CODIGO DE INTERFAZ EMPIEZA AQUI
@@ -128,7 +137,7 @@ def center_window(window, width, height):
 
 
 def clear_placeholder(event):
-    if extension_ingresada.get() == "Ejemplo: JPG y CLICK":
+    if extension_ingresada.get() == "Ejemplo: JPG":
         extension_ingresada.delete(0, tk.END)
         extension_ingresada.configure(foreground='forest green')
 
@@ -144,7 +153,7 @@ window.resizable(width=False, height=False)
 
 # tamaño de la ventana principal
 window_width = 307
-window_height = 400
+window_height = 410
 window.geometry(f"{window_width}x{window_height}")
 
 # Centrar la ventana principal en la pantalla, se llama a la funcion  y se entrega el tamaño y las proporciones
@@ -187,7 +196,7 @@ extension_guardada = tk.StringVar()
 extension_ingresada = tk.Entry(frame_colum1, selectbackground="forest green",
                                foreground="forest green", textvariable=extension_guardada, justify="center")
 
-extension_ingresada.insert(0, "Ejemplo: JPG y CLICK")
+extension_ingresada.insert(0, "Ejemplo: JPG")
 extension_ingresada.bind('<FocusIn>', clear_placeholder)
 extension_ingresada.grid(row=1, column=1)
 
@@ -230,24 +239,37 @@ Borrar_3.grid(row=1, column=2, padx=(0,2))
 #==========================================================================================
 # Marco Inferior 2
 #==========================================================================================
-frame_colum4 = tk.Frame(frame_margen, background="forest green", bd=2, relief="sunken",height=68)
-frame_colum4.grid(row=3, column=0, padx=(10, 0), pady=10, sticky="nesw")
 
-# Botones Inferior 2
+frame_colum4 = tk.Frame(frame_margen, background="#999f9b", bd=2, relief="sunken",height=68)
+frame_colum4.grid(row=3, column=0, padx=(10, 0), pady=(8,9), sticky="nesw")
+
+# Botones Inferior 3
+
 frame_separador1 = tk.Frame(frame_colum4, background="forest green")
 frame_separador1.grid(row=0,column=0)
 
-boton_inicio = tk.Button(frame_separador1, text="START",width=10, height=3, relief="ridge", command=abrir_1.ejecucion_principal)
-boton_inicio.grid(row=0, column=0, padx=(5, 0), pady=(5, 5))
+boton_inicio = tk.Button(frame_separador1, text="Iniciar",width=8, height=1, relief="ridge", command=abrir_1.ejecucion_principal)
+boton_inicio.grid(row=0, column=0, padx=0, pady=0)
 
-frame_separador2 = tk.Frame(frame_colum4, background="forest green")
-frame_separador2.grid(row=0, column=1, padx=(15,0))
+#==========================================================================================
+# Marco Inferior 3
+#==========================================================================================
+frame_colum5 = tk.Frame(frame_margen, bd=2, relief="sunken",height=68)
+frame_colum5.grid(row=4, column=0, padx=(10, 0), pady=0, sticky="nesw")
 
-elementos_buscados = tk.Label(frame_separador2, text="Total a buscar [0]")
-elementos_buscados.grid(row=0, column=1, pady=(0,7))
+# Botones Inferior 3
+frame_separador2 = tk.Frame(frame_colum5)
+frame_separador2.grid(row=0,column=0)
 
-documentos_encontrados = tk.Label(frame_separador2, text="Elementos encontrados [0]")
-documentos_encontrados.grid(row=1, column=1)
+boton_instrupcion = tk.Button(frame_separador2, text="Intrupciones",width=10, height=1, relief="ridge", command="")
+boton_instrupcion.grid(row=0, column=0, padx=(8, 8), pady=(5, 5))
+
+boton_info = tk.Button(frame_separador2, text="Acerca de",width=10, height=1, relief="ridge", command="")
+boton_info.grid(row=0, column=1, padx=(0, 0), pady=(5, 5))
+
+boton_registros = tk.Button(frame_separador2, text="Ver historial",width=10, height=1, relief="ridge", command="")
+boton_registros.grid(row=0, column=2, padx=(8, 0), pady=(5, 5))
+
 #==========================================================================================
 
 # Mostrar la ventana principal
