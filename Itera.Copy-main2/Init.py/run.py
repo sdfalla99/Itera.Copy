@@ -11,6 +11,8 @@ import os
 class busqueda_init:
 
     def __init__(self):
+        self.texto_actualizado = ""
+        self.text_widget2 = None
         self.nombre = None
         self.c1 = 0
         self.c2 = 0
@@ -207,6 +209,7 @@ class busqueda_init:
                         self.encontrados_l.config(text=f"/Archivos Encontrados {self.c1}")
                         if self.nombre is not None:
                             text_widget2.insert("end", f"Nombre: {self.nombre}\nRuta:{ruta_archivo_encontrado}\n")
+                            self.texto_actualizado = text_widget2.get("1.0", "end-1c")
                             self.nombre = None
                     progreso_actual.set(self.total_filas)
                     etiqueta_porcentaje.config(text="100%")
@@ -234,14 +237,15 @@ class busqueda_init:
             self.frame_contador.grid(row=0, column=0, padx=(5, 0), pady=(10, 10))
 
             # Label de conteo, busqueda y encontrados
-            self.localizando = tk.Label(self.frame_contador, text=f"Localizando {self.c2} de {0}")
+            self.localizando = tk.Label(self.frame_contador, text=f"Localizando {self.c2} de {self.total_filas}")
             self.localizando.grid(row=0, column=0)
             self.encontrados_l = tk.Label(self.frame_contador, text=f"/Archivos Encontrados {self.c1}")
             self.encontrados_l.grid(row=0, column=1)
             self.frame_registros = tk.Frame(self.frame_margen4, bd=2, height=349, width=309, relief="ridge")
-            self.frame_registros.grid(row=1, column=0, padx=(2, 0), pady=2)
+            self.frame_registros.grid(row=1, column=0, padx=(4, 0), pady=2)
             text_widget2 = tk.Text(self.frame_registros, height=22, width=38)
             text_widget2.pack(fill="both", expand=True)
+            text_widget2.insert("1.0", self.texto_actualizado)
             self.registro_encontrado = ttk.Scrollbar(self.frame_registros, orient="vertical", command=text_widget2.yview)
             text_widget2.configure(yscrollcommand=self.registro_encontrado.set)
             self.registro_encontrado.pack(side="right", fill="y")
