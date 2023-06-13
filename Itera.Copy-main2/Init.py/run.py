@@ -111,62 +111,61 @@ class busqueda_init:
             if boton_inicio["text"] == "Detener":
                 boton_inicio.configure(text="Iniciar")
                 self.detener_proceso = True
+                self.estado3 = True
                 return
-            self.detener_proceso = False
             self.ruta_archivo.replace("/","\\")
             boton_inicio.configure(text="Detener")
-            
+        
             if self.window_4 is not None and self.estado3:
-                self.estado3 = False
-            else:
-                self.window_4 = tk.Toplevel()
-                self.window_4.title("Registro de exploración")
-                self.window_4.configure(bg="forest green")
-                self.window_4.resizable(width=False, height=False)
+                    self.window_4.destroy()
+            self.window_4 = tk.Toplevel()
+            self.window_4.title("Registro de exploración")
+            self.window_4.configure(bg="forest green")
+            self.window_4.resizable(width=False, height=False)
 
-                # marco secundario "Registro de exploración"
-                self.frame_margen4 = tk.Frame(self.window_4, bd=2, relief=tk.SUNKEN)
-                self.frame_margen4.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+            # marco secundario "Registro de exploración"
+            self.frame_margen4 = tk.Frame(self.window_4, bd=2, relief=tk.SUNKEN)
+            self.frame_margen4.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
-                self.frame_contador = tk.Frame(self.frame_margen4, bd=2, highlightbackground="forest green", relief="sunken", highlightthickness=3)
-                self.frame_contador.grid(row=0, column=0, padx=(5, 0), pady=(10, 10))
+            self.frame_contador = tk.Frame(self.frame_margen4, bd=2, highlightbackground="forest green", relief="sunken", highlightthickness=3)
+            self.frame_contador.grid(row=0, column=0, padx=(5, 0), pady=(10, 10))
 
-                # Label de conteo, busqueda y encontrados
-                self.localizando = tk.Label(self.frame_contador, text=f"Localizando {self.c2} de {0}")
-                self.localizando.grid(row=0, column=0)
-                self.encontrados_l = tk.Label(self.frame_contador, text=f"/Archivos Encontrados {self.c1}")
-                self.encontrados_l.grid(row=0, column=1)
-                self.frame_registros = tk.Frame(self.frame_margen4, bd=2, height=349, width=309, relief="ridge")
-                self.frame_registros.grid(row=1, column=0, padx=(4, 0), pady=2)
-                text_widget2 = tk.Text(self.frame_registros, height=22, width=38)
-                text_widget2.pack(fill="both", expand=True)
-                self.registro_encontrado = ttk.Scrollbar(self.frame_registros, orient="vertical", command=text_widget2.yview)
-                text_widget2.configure(yscrollcommand=self.registro_encontrado.set)
-                self.registro_encontrado.pack(side="right", fill="y")
+            # Label de conteo, busqueda y encontrados
+            self.localizando = tk.Label(self.frame_contador, text=f"Localizando {self.c2} de {0}")
+            self.localizando.grid(row=0, column=0)
+            self.encontrados_l = tk.Label(self.frame_contador, text=f"/Archivos Encontrados {self.c1}")
+            self.encontrados_l.grid(row=0, column=1)
+            self.frame_registros = tk.Frame(self.frame_margen4, bd=2, height=349, width=309, relief="ridge")
+            self.frame_registros.grid(row=1, column=0, padx=(4, 0), pady=2)
+            text_widget2 = tk.Text(self.frame_registros, height=22, width=38)
+            text_widget2.pack(fill="both", expand=True)
+            self.registro_encontrado = ttk.Scrollbar(self.frame_registros, orient="vertical", command=text_widget2.yview)
+            text_widget2.configure(yscrollcommand=self.registro_encontrado.set)
+            self.registro_encontrado.pack(side="right", fill="y")
 
-                # tamaño de la ventana secundaria
-                window_width_4 = 330
-                window_height_4 = 420
+            # tamaño de la ventana secundaria
+            window_width_4 = 330
+            window_height_4 = 420
 
-                # obtener la posición y tamaño de la ventana principal
-                root_x = window.winfo_x()
-                root_y = window.winfo_y()
-                root_width = window.winfo_width()
-                root_height = window.winfo_height()
+            # obtener la posición y tamaño de la ventana principal
+            root_x = window.winfo_x()
+            root_y = window.winfo_y()
+            root_width = window.winfo_width()
+            root_height = window.winfo_height()
 
-                # calcular la posición de la ventana "Registro de exploración" a la derecha de la ventana principal
-                x = root_x + root_width + 5  # 10 es el espacio entre las ventanas
-                y = root_y
+            # calcular la posición de la ventana "Registro de exploración" a la derecha de la ventana principal
+            x = root_x + root_width + 5  # 10 es el espacio entre las ventanas
+            y = root_y
 
-                # ajustar la posición de la ventana secundaria si se sale de la pantalla
-                screen_width = window.winfo_screenwidth()
-                if x + window_width_4 > screen_width:
-                    x = screen_width - window_width_4
+            # ajustar la posición de la ventana secundaria si se sale de la pantalla
+            screen_width = window.winfo_screenwidth()
+            if x + window_width_4 > screen_width:
+                x = screen_width - window_width_4
 
-                # establecer la geometría de la ventana secundaria
-                self.window_4.geometry(f"{window_width_4}x{window_height_4}+{x}+{y}")
+            # establecer la geometría de la ventana secundaria
+            self.window_4.geometry(f"{window_width_4}x{window_height_4}+{x}+{y}")
 
-                self.estado3 = True
+            self.estado3 = True
 
             def independiente():
                 boton_registros.config(state="disabled")
