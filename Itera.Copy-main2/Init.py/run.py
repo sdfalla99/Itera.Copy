@@ -108,6 +108,7 @@ class busqueda_init:
     def ejecucion_principal(self):
             self.c1 = 0
             self.c2 = 0
+            self.detener_proceso = False
             if boton_inicio["text"] == "Detener":
                 boton_inicio.configure(text="Iniciar")
                 self.detener_proceso = True
