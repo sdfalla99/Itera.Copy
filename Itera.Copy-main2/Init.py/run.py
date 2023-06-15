@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
 import threading
+import datetime
 import shutil
 import csv
 import os
@@ -14,6 +15,7 @@ class busqueda_init:
         self.texto_actualizado = ""
         self.text_widget2 = None
         self.nombre = None
+        self.logs = ""
         self.c1 = 0
         self.c2 = 0
         self.total_filas = 0
@@ -181,15 +183,17 @@ class busqueda_init:
 
                 with open(self.ruta_archivo,"r") as csv1:
                     lector_fila = csv.reader(csv1)
+                    nombre_predeterminado = "Logs_s"
                     for valor_d in lector_fila:
                         if self.detener_proceso:
                             break
                         concatenado = valor_d[0]+"."+self.ingresado
                         for ruta_origen, carpetas, archivos in os.walk(self.ruta_busqueda.replace("/","\\")):
                             if concatenado in archivos:
+                                register = "Logs_new" 
                                 ruta_archivo_encontrado = os.path.join(ruta_origen, concatenado)
                                 if self.opcion  == "Cortar":
-                                    shutil.move(ruta_archivo_encontrado, self.ruta_destino2.replace("/","\\"))
+                                    shutil.move(ruta_archivo_encontrado, self.ruta_destino2.replace("/","\\")) 
                                     self.c1 += 1
                                     self.nombre = valor_d
                                 elif self.opcion == "Copiar":
@@ -200,6 +204,10 @@ class busqueda_init:
                                     os.remove(ruta_archivo_encontrado)
                                     self.c1 += 1
                                     self.nombre = valor_d
+                                resetlogs = ""
+                                resetlogs += f"Nombre: {self.nombre}\nRuta: {ruta_archivo_encontrado}\n"
+                                with open(register, "a") as logs1:
+                                    logs1.write(resetlogs)
                         progreso_actual.set(progreso_actual.get() + 1)
                         porcentaje = int((progreso_actual.get() / self.total_filas) * 100)
                         etiqueta_porcentaje.config(text=f"{porcentaje}%")
