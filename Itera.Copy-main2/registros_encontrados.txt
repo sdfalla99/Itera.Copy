@@ -1,0 +1,4 @@
+Nombre: ['98']
+Ruta: C:\Users\Simon Falla\Desktop\Soporte LS\98.txt
+Nombre: ['99']
+Ruta: C:\Users\Simon Falla\Desktop\Soporte LS\Soporte S\reparador Windows\Reset Windows Update Tool\99.txt

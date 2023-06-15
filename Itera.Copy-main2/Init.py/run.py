@@ -13,6 +13,7 @@ class busqueda_init:
 
     def __init__(self):
         self.texto_actualizado = ""
+        self.comprobar = True
         self.text_widget2 = None
         self.nombre = None
         self.logs = ""
@@ -183,14 +184,14 @@ class busqueda_init:
 
                 with open(self.ruta_archivo,"r") as csv1:
                     lector_fila = csv.reader(csv1)
-                    nombre_predeterminado = "Logs_s"
                     for valor_d in lector_fila:
                         if self.detener_proceso:
                             break
                         concatenado = valor_d[0]+"."+self.ingresado
                         for ruta_origen, carpetas, archivos in os.walk(self.ruta_busqueda.replace("/","\\")):
                             if concatenado in archivos:
-                                register = "Logs_new" 
+                                register = "Archivos_encontrados.txt"
+                                register_user =  "registros_encontrados.txt"
                                 ruta_archivo_encontrado = os.path.join(ruta_origen, concatenado)
                                 if self.opcion  == "Cortar":
                                     shutil.move(ruta_archivo_encontrado, self.ruta_destino2.replace("/","\\")) 
@@ -207,7 +208,10 @@ class busqueda_init:
                                 resetlogs = ""
                                 resetlogs += f"Nombre: {self.nombre}\nRuta: {ruta_archivo_encontrado}\n"
                                 with open(register, "a") as logs1:
-                                    logs1.write(resetlogs)
+                                   logs1.write(resetlogs)
+                                with open(register_user, "a") as logs2:
+                                   logs2.write(resetlogs)
+
                         progreso_actual.set(progreso_actual.get() + 1)
                         porcentaje = int((progreso_actual.get() / self.total_filas) * 100)
                         etiqueta_porcentaje.config(text=f"{porcentaje}%")
@@ -219,6 +223,9 @@ class busqueda_init:
                             text_widget2.insert("end", f"Nombre: {self.nombre}\nRuta:{ruta_archivo_encontrado}\n")
                             self.texto_actualizado = text_widget2.get("1.0", "end-1c")
                             self.nombre = None
+                    shutil.move(register_user, self.ruta_destino2.replace("/","\\"))
+                    if os.path.exists(self.ruta_destino2.replace("/","\\")):
+                        os.remove(self.ruta_destino2.replace("/","\\"))
                     progreso_actual.set(self.total_filas)
                     etiqueta_porcentaje.config(text="100%")
                     barra_progreso.grid_remove()
