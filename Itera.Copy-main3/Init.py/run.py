@@ -12,6 +12,7 @@ import os
 class busqueda_init:
 
     def __init__(self):
+        self.opcion = None
         self.texto_actualizado = ""
         self.comprobar = True
         self.text_widget2 = None
@@ -35,13 +36,13 @@ class busqueda_init:
             nombre_csv.delete(0, "end")
             # Insertar el nombre del archivo en el Entry
             nombre_csv.insert(0, nombre_archivo)
-            nombre_csv.config(disabledbackground="#81db95",disabledforeground='white')
+            nombre_csv.config(relief=tk.SOLID, bd=2, disabledforeground="forest green", highlightbackground="#00FF00", highlightthickness=1)
             nombre_csv.config(state="disabled")  # Deshabilitar el Entry
         
 
     def valor_extension(self):
         self.ingresado = extension_guardada.get()  # Obtener el valor del Entry
-        extension_ingresada.config(disabledbackground="#81db95" ,disabledforeground="white")
+        extension_ingresada.config(relief=tk.SOLID, bd=2, disabledforeground="forest green", highlightbackground="#00FF00", highlightthickness=0)
         if extension_ingresada['state'] == 'normal':
             extension_ingresada.config(state='disabled')  # Deshabilitar el Entry
         else:
@@ -56,7 +57,7 @@ class busqueda_init:
         ruta_ubicacion.delete(0, "end")
         # Insertar el nombre del archivo en el Entry
         ruta_ubicacion.insert(0, nombre_carpeta)
-        ruta_ubicacion.config(disabledforeground="white",disabledbackground="#81db95")
+        ruta_ubicacion.config(relief=tk.SOLID, bd=2, disabledforeground="forest green", highlightbackground="#00FF00", highlightthickness=1)
         ruta_ubicacion.config(state="disabled")  # Deshabilitar el Entry
     
     def ruta_destino_(self):
@@ -68,7 +69,7 @@ class busqueda_init:
         ruta_destino.delete(0, "end")
         # Insertar el nombre del archivo en el Entry
         ruta_destino.insert(0, nombre_carpeta2)
-        ruta_destino.config(disabledforeground="white",disabledbackground="#81db95")
+        ruta_destino.config(relief=tk.SOLID, bd=2, disabledforeground="forest green", highlightbackground="black", highlightthickness=0)
         ruta_destino.config(state="disabled")  # Deshabilitar el Entry
     
     def opcion_disponible (self, opcion):
@@ -77,8 +78,8 @@ class busqueda_init:
         if opcion  == "Cortar":
             color_opcion = Cortar_1.cget("background")
             if Cortar_1["state"] == "normal" and color_opcion != "forest green":
-                Copiar_2.config(state='disabled')  # Deshabilitar el Entry
-                Borrar_3.config(state='disabled')
+                Copiar_2.config(state='disabled',bg="SystemButtonFace")  # Deshabilitar el Entry
+                Borrar_3.config(state='disabled', bg="SystemButtonFace")
                 Cortar_1.config(bg="forest green")
             else:
                 Copiar_2.config(state='normal')  # Habilitar el Entry
@@ -87,8 +88,8 @@ class busqueda_init:
         if opcion  == "Copiar":
             color_opcion = Copiar_2.cget("background")
             if Copiar_2["state"] == "normal" and color_opcion != "forest green":
-                Borrar_3.config(state='disabled')
-                Cortar_1.config(state='disabled')  # Deshabilitar el Entry
+                Borrar_3.config(state='disabled', bg="SystemButtonFace")
+                Cortar_1.config(state='disabled',bg="SystemButtonFace")  # Deshabilitar el Entry
                 Copiar_2.config(bg="forest green")
             else:
                 Borrar_3.config(state='normal')  # Habilitar el Entry
@@ -97,9 +98,10 @@ class busqueda_init:
         if opcion == "Borrar":
             color_opcion = Borrar_3.cget("background")
             if Copiar_2["state"] == "normal" and color_opcion != "forest green":
-                Copiar_2.config(state='disabled')  # Deshabilitar el Entry
-                Cortar_1.config(state='disabled')
+                Copiar_2.config(state='disabled',bg="SystemButtonFace")  # Deshabilitar el Entry
+                Cortar_1.config(state='disabled', bg="SystemButtonFace")
                 Borrar_3.config(bg="forest green")
+
             else:
                 Copiar_2.config(state='normal')  # Habilitar el Entry
                 Cortar_1.config(state='normal')  # Habilitar el Entry
@@ -109,6 +111,7 @@ class busqueda_init:
 # Aqui empieza la logica y funcionamiento principal del programa
     
     def ejecucion_principal(self):
+            
             self.c1 = 0
             self.c2 = 0
             self.detener_proceso = False
@@ -121,7 +124,8 @@ class busqueda_init:
                 self.ruta_archivo.replace("/","\\")
                 boton_inicio.configure(text="Detener")
             except:
-                nombre_csv.config(disabledbackground='#e08686')
+                nombre_csv.config(highlightbackground="red", highlightthickness=2)
+                return
         
             if self.window_4 is not None and self.estado3:
                     self.window_4.destroy()
@@ -193,37 +197,48 @@ class busqueda_init:
                         try:
                             concatenado = valor_d[0]+"."+self.ingresado
                         except:
-                            extension_ingresada.config(bg='#e08686')
+                            extension_ingresada.config(highlightbackground="red", highlightthickness=2)
+                            break
                         try:
-                         for ruta_origen, carpetas, archivos in os.walk(self.ruta_busqueda.replace("/","\\")):
+                         for ruta_origen, carpetas, archivos in os.walk(self.ruta_busqueda.replace("/","\\")):    
                             if concatenado in archivos:
                                 register = "Archivos_encontrados.txt"
-                                register_user =  "registros_encontrados.txt"
                                 ruta_archivo_encontrado = os.path.join(ruta_origen, concatenado)
-                                if self.opcion != 'Borrar' and ruta_destino["text"] == None:
-                                    ruta_destino.config(disabledbackground='#e08686')
-                                else:
-                                    if self.opcion  == "Cortar":
-                                        shutil.move(ruta_archivo_encontrado, self.ruta_destino2.replace("/","\\")) 
-                                        self.c1 += 1
-                                        self.nombre = valor_d
-                                    elif self.opcion == "Copiar":
-                                        shutil.copy2(ruta_archivo_encontrado, self.ruta_destino2.replace("/","\\"))
-                                        self.c1 += 1
-                                        self.nombre = valor_d
-                                    elif self.opcion == "Borrar":
-                                        os.remove(ruta_archivo_encontrado)
-                                        self.c1 += 1
-                                        self.nombre = valor_d
-                                    resetlogs = ""
-                                    resetlogs += f"Nombre: {self.nombre}\nRuta: {ruta_archivo_encontrado}\n"
-                                    with open(register, "a") as logs1:
-                                        logs1.write(resetlogs)
-                                    with open(register_user, "a") as logs2:
-                                        logs2.write(resetlogs)
+                                if self.opcion  == "Cortar":
+                                    shutil.move(ruta_archivo_encontrado, self.ruta_destino2.replace("/","\\")) 
+                                    self.c1 += 1
+                                    self.nombre = valor_d
+                                elif self.opcion == "Copiar":
+                                    shutil.copy2(ruta_archivo_encontrado, self.ruta_destino2.replace("/","\\"))
+                                    self.c1 += 1
+                                    self.nombre = valor_d
+                                elif self.opcion == "Borrar":
+                                    os.remove(ruta_archivo_encontrado)
+                                    self.c1 += 1
+                                    self.nombre = valor_d
+                                resetlogs = ""
+                                resetlogs += f"Nombre: {self.nombre}\nRuta: {ruta_archivo_encontrado}\n"
+                                with open(register, "a") as logs1:
+                                    logs1.write(resetlogs)
+                                ruta_script = os.path.dirname(os.path.abspath(__file__))
+                                ruta_archivos_encontrados = os.path.join(ruta_script, "..", "Archivos_encontrados.txt")
+                                shutil.copy2(ruta_archivos_encontrados,self.ruta_destino2.replace("/", "\\"))
                         except:
-                            ruta_ubicacion.config(disabledbackground='#e08686')
+                            value1 = ruta_ubicacion.get()
+                            if not value1:
+                                ruta_ubicacion.config(highlightbackground="red", highlightthickness=2)
+                                break
+                        if self.opcion == None:
+                            Cortar_1.config(bg="#FFCCCC")
+                            Copiar_2.config(bg="#FFCCCC")
+                            Borrar_3.config(bg="#FFCCCC")
                             break
+                        value2 = ruta_destino.get()
+                        if not value2 and self.opcion != "Borrar":
+                            ruta_destino.config(highlightbackground="red", highlightthickness=2)
+                            break
+                        
+                        ruta_destino.config(relief=tk.SOLID, bd=2, disabledforeground="forest green", highlightbackground="#00FF00", highlightthickness=1)
                         progreso_actual.set(progreso_actual.get() + 1)
                         porcentaje = int((progreso_actual.get() / self.total_filas) * 100)
                         etiqueta_porcentaje.config(text=f"{porcentaje}%")
@@ -317,7 +332,7 @@ def center_window(window, width, height):
 def clear_placeholder(event):
     if extension_ingresada.get() == "Ejemplo: JPG":
         extension_ingresada.delete(0, tk.END)
-        extension_ingresada.configure(foreground='forest green')
+        extension_ingresada.config(highlightthickness=0)
 
 
 estado1 = False
@@ -496,12 +511,12 @@ GitHub: https://github.com/sdfalla99
 window = tk.Tk()
 window.title("Itera_Copy")
 window.iconphoto(True, tk.PhotoImage(file="icon/escarabajo.png"))
-window.configure(bg="forest green")
+window.configure(bg="#008000")
 window.resizable(width=False, height=False)
 
 # tamaño de la ventana principal
-window_width = 307
-window_height = 420
+window_width = 310
+window_height = 422
 window.geometry(f"{window_width}x{window_height}")
 
 # Centrar la ventana principal en la pantalla, se llama a la funcion  y se entrega el tamaño y las proporciones
@@ -510,7 +525,7 @@ center_window(window, window_width, window_height)
 # Marco Principal, este marco es el que permite visualizar el borde del aplicativo en verde ya que cubre la ventana principal
 # y dentro de este se agrega todo el codigo correspondiente, por lo cual vendria siendo la ventana_padre
 
-frame_margen = tk.Frame(window, bd=2, relief=tk.SUNKEN)
+frame_margen = tk.Frame(window, relief=tk.SOLID, bd=1)
 frame_margen.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
 #==========================================================================================
@@ -541,11 +556,10 @@ nombre_csv = tk.Entry(frame_colum1, selectbackground="forest green", foreground=
 nombre_csv.grid(row=0, column=1)
 
 extension_guardada = tk.StringVar()
-extension_ingresada = tk.Entry(frame_colum1, selectbackground="forest green",
-                               foreground="forest green", textvariable=extension_guardada, justify="center")
+extension_ingresada = tk.Entry(frame_colum1, selectbackground="forest green", foreground="forest green", textvariable=extension_guardada, justify="center",highlightbackground=None)
 
-extension_ingresada.insert(0, "Ejemplo: JPG")
 extension_ingresada.bind('<FocusIn>', clear_placeholder)
+extension_ingresada.insert(0, "Ejemplo: JPG")
 extension_ingresada.grid(row=1, column=1)
 
 #===========================================================================================

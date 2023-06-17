@@ -1,0 +1,32 @@
+Nombre: ['54']
+Ruta: D:\SimonFalla\Personal\Programacion\Mi biblioteca\54.txt
+Nombre: ['54']
+Ruta: D:\SimonFalla\Personal\Programacion\Mi biblioteca\54.txt
+Nombre: ['54']
+Ruta: D:\SimonFalla\Personal\Programacion\Mi biblioteca\54.txt
+Nombre: ['50']
+Ruta: D:\SimonFalla\Personal\Programacion\Curso_python, SQlite\50.txt
+Nombre: ['50']
+Ruta: D:\SimonFalla\Personal\Programacion\Curso_python, SQlite\50.txt
+Nombre: ['50']
+Ruta: D:\SimonFalla\Personal\Programacion\Curso_python, SQlite\50.txt
+Nombre: ['50']
+Ruta: D:\SimonFalla\Personal\Programacion\Curso_python, SQlite\50.txt
+Nombre: ['50']
+Ruta: D:\SimonFalla\Personal\Programacion\Curso_python, SQlite\50.txt
+Nombre: ['50']
+Ruta: D:\SimonFalla\Personal\Programacion\Curso_python, SQlite\50.txt
+Nombre: ['50']
+Ruta: D:\SimonFalla\Personal\Programacion\Curso_python, SQlite\50.txt
+Nombre: ['50']
+Ruta: D:\SimonFalla\Personal\Programacion\Curso_python, SQlite\50.txt
+Nombre: ['50']
+Ruta: D:\SimonFalla\Personal\Programacion\Curso_python, SQlite\50.txt
+Nombre: ['60']
+Ruta: D:\SimonFalla\Personal\Programacion\Curso_python, SQlite\Ficheros+Curso+Windows\Scrypt_python\.vscode\60.txt
+Nombre: ['60']
+Ruta: D:\SimonFalla\Personal\Programacion\Curso_python, SQlite\Ficheros+Curso+Windows\Scrypt_python\.vscode\60.txt
+Nombre: ['60']
+Ruta: D:\SimonFalla\Personal\Programacion\Curso_python, SQlite\Ficheros+Curso+Windows\Scrypt_python\.vscode\60.txt
+Nombre: ['20']
+Ruta: D:\SimonFalla\Personal\Programacion\Curso_python, SQlite\Ficheros+Curso+Windows\Scrypt_python\.vscode\20.txt
